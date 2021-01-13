@@ -14,7 +14,7 @@ function installPackages {
 
 function configureVM {
   validVMInput=0
-  while [ $validInput -ne "1" ]; do
+  while [ $validVMInput -ne "1" ]; do
 
     read -p "Is this Arch Linux install running inside of a VMware virtual machine? [Y/N]" vmConfirm
 
