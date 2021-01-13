@@ -62,32 +62,28 @@ function diskSetup {
     fi
   done
 
-
   echo "Partitioning disk..."
-  # https://superuser.com/a/332322
-
   (
-    echo o
-    echo n
-    echo p
-    echo 1
-    echo 
-    echo +300M
-    echo n
-    echo p
-    echo 2
-    echo 
-    echo +$swap
-    echo n
-    echo p
-    echo 3
-    echo 
-    echo 
-    echo a
-    echo 1
-    echo p
-    echo w
-    echo q
+    echo o      # clear the partition table from memory
+    echo n      # create a new partition
+    echo p      # set the new partition as the primary partition
+    echo 1      # set the partition number to 1
+    echo        # default: start partition at the beginning of the disk
+    echo +300M  # make the new partition 300M big
+    echo n      # create a new partition
+    echo p      # set the new partition as the primary partition
+    echo 2      # set the partition number to 2
+    echo        # default: start partition after partition 1
+    echo +$swap # make the new partition as big as the user wanted
+    echo n      # create a new partition
+    echo p      # set the new partition as the primary partition
+    echo 3      # set the partition number to 3
+    echo        # default: start partition after partition 2
+    echo        # default: make partition as big as the remaining disk space
+    echo a      # make a partition bootable
+    echo 1      # set partition 1 as the bootable partition
+    echo w      # write the new partition table to memory
+    echo q      # exit fdisk
   ) | fdisk $disk
 
   echo "Formatting disk, enabling and mounting partitions..."

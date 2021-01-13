@@ -8,8 +8,8 @@
 #!/bin/bash
 
 function installPackages {
-  echo "Installing efibootmgr, dosfstools, gptfdisk, grub, networkmanager and vim..."
-  pacman -Sy efibootmgr dosfstools gptfdisk grub networkmanager vim --noconfirm
+  echo "Installing efibootmgr, dosfstools, gptfdisk, grub, networkmanager, sudo and vim..."
+  pacman -Sy efibootmgr dosfstools gptfdisk grub networkmanager sudo vim --noconfirm
 }
 
 function configureVM {
@@ -24,7 +24,7 @@ function configureVM {
     elif [ $vmConfirm == "n" ] || [ $vmConfirm == "N" ]; then
       validVMInput=1
     else
-      echo "Invalid Input. Please try again."
+      echo "Invalid input, retrying."
     fi
   done
 
@@ -39,21 +39,21 @@ function configureVM {
     elif [ $gfxConfirm == "n" ] || [ $gfxConfirm == "N" ]; then
       validGFXInput=1
     else
-      echo "Invalid Input. Please try again."
+      echo "Invalid input, retrying."
     fi
   done
 
 }
 
 function installVMTools {
-  echo "Installing open-vm-tools"
+  echo "Installing open-vm-tools..."
   pacman -S open-vm-tools --noconfirm
   systemctl enable --now vmtoolsd.service
   systemctl enable --now vmware-vmblock-fuse.service
 }
 
 function installVMGFX {
-  echo "Installing VMware graphics drivers"
+  echo "Installing VMware graphics drivers..."
   pacman -S xf86-input-vmmouse xf86-video-vmware mesa gtk2 gtkmm --noconfirm
   echo needs_root_rights=yes >> /etc/X11/Xwrapper.config
 }
@@ -89,11 +89,66 @@ function installBootloader {
   grub-mkconfig -o /boot/grub/grub.cfg
 }
 
+function setRootPasswd {
+  validPasswdInput=0
+  while [ $validPasswdInput -ne "1" ]; do
+
+    read -s -p "Enter the new root password: " rootPasswd
+    read -s -p "Enter the new root password again (verification): " verifyPasswd
+
+    if [ $rootPasswd == $verifyPasswd ]; then
+      validPasswdInput=1
+      echo "Passwords match, setting root password..."
+      echo "root:$rootPasswd" | chpasswd
+    else
+      echo "Passwords do not match, retrying."
+    fi
+  done
+}
+
+function configureNewUser {
+  validUserInput=0
+  while [ $validUserInput -ne "1" ]; do
+
+    read -p "Do you want to create a new user? [Y/N] " userConfirm
+
+    if [ $userConfirm == "y" ] || [ $userConfirm == "Y" ]; then
+      validUserInput=1
+      createNewUser
+    elif [ $userConfirm == "n" ] || [ $userConfirm == "N" ]; then
+      validUserInput=1
+    else
+      echo "Invalid input, retrying."
+    fi
+  done
+}
+
+function createNewUser {
+  validUsernameInput=0
+  while [ $validUsernameInput -ne "1" ]; do
+
+    read -p "Enter a new username: " username
+
+    getent passwd $username > /dev/null 2&>1
+
+    if [ $? -ne 0 ]; then
+      validUsernameInput=1
+      echo "Creating new user $username..."
+      useradd -m -g users -s /bin/bash $username
+      echo "The new user $username has been created. You still need to give them sudo permissions (if needed)."
+    else
+      echo "User already exists, retrying."
+    fi
+  done
+}
+
 if [[ $EUID -eq 0 ]]; then
-   installPackages
-   configureVM
-   configureSystem
-   installBootloader
+  installPackages
+  configureVM
+  configureSystem
+  installBootloader
+  setRootPasswd
+  configureNewUser
 else
   echo "This script must be run as root."
   exit
