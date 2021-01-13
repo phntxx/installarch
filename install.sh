@@ -15,11 +15,6 @@ function checkInternet {
   fi
 }
 
-function updateClock {
-  echo "Enabling NTP..."
-  timedatectl set-ntp true
-}
-
 function diskSetup {
 
   validDiskInput=0
@@ -108,15 +103,20 @@ function diskSetup {
   mount ${disk}1 /mnt/boot
 }
 
+function updateClock {
+  echo "Enabling NTP..."
+  timedatectl set-ntp true
+}
+
 function installArch {
   echo "Installing Arch Linux..."
-  pacstrap /mnt base base-devel linux linux firmware
+  pacstrap /mnt base base-devel linux linux-firmware
 }
 
 if [[ $EUID -eq 0 ]]; then
    checkInternet
-   updateClock
    diskSetup
+   updateClock
    installArch
 else
   echo "This script must be run as root."
