@@ -35,8 +35,8 @@ function diskSetup {
 
   validSwapInput=0
   while [ $validSwapInput -ne "1" ]; do
-    read -p "What disk do you want to install Arch Linux on (e.g. 5G)? " swap
-    if [ $swap =~ ^[1-9][0-9]*[MG]$ ]; then
+    read -p "How much disk space should be allocated to the swap partition (e.g. 5G)? " swap
+    if [[ $swap =~ ^[1-9][0-9]*[MG]$ ]]; then
         echo "Swap partition will be $swap in size, continuing..."
         validSwapInput=1
     else
