@@ -51,7 +51,7 @@ function diskSetup {
   echo "During this process, all of the data that is currently on the disk will be lost."
 
   validConfirmInput=0
-  while [ $validInput -ne "1" ]; do
+  while [ $validConfirmInput -ne "1" ]; do
 
     read -p "Do you want to continue? [Y/N] " formatConfirm
 
@@ -70,29 +70,30 @@ function diskSetup {
 
   echo "Partitioning disk..."
   # https://superuser.com/a/332322
+
   (
-    o
-    n
-    p
-    1
-
-    +300M
-    n
-    p
-    2
-
-    +$disk
-    n
-    p
-    3
-
-
-    a
-    1
-    p
-    w
-    q
-  ) | fdisk
+    echo o
+    echo n
+    echo p
+    echo 1
+    echo 
+    echo +300M
+    echo n
+    echo p
+    echo 2
+    echo 
+    echo +$swap
+    echo n
+    echo p
+    echo 3
+    echo 
+    echo 
+    echo a
+    echo 1
+    echo p
+    echo w
+    echo q
+  ) | fdisk $disk
 
   echo "Formatting disk, enabling and mounting partitions..."
 
