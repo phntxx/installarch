@@ -9,7 +9,7 @@
 
 function installPackages {
   echo "Installing efibootmgr, dosfstools, gptfdisk, grub, networkmanager and vim..."
-  pacman -Sy efibootmgr dosfstools gptfdisk grub networkmanager vim
+  pacman -Sy efibootmgr dosfstools gptfdisk grub networkmanager vim --noconfirm
 }
 
 function configureVM {
@@ -47,14 +47,14 @@ function configureVM {
 
 function installVMTools {
   echo "Installing open-vm-tools"
-  pacman -S open-vm-tools
+  pacman -S open-vm-tools --noconfirm
   systemctl enable --now vmtoolsd.service
   systemctl enable --now vmware-vmblock-fuse.service
 }
 
 function installVMGFX {
   echo "Installing VMware graphics drivers"
-  pacman -S xf86-input-vmmouse xf86-video-vmware mesa gtk2 gtkmm
+  pacman -S xf86-input-vmmouse xf86-video-vmware mesa gtk2 gtkmm --noconfirm
   echo needs_root_rights=yes >> /etc/X11/Xwrapper.config
 }
 
