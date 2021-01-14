@@ -50,8 +50,8 @@ function configureVM {
 function installVMTools {
   echo "Installing open-vm-tools..."
   pacman -S open-vm-tools --noconfirm
-  systemctl enable --now vmtoolsd.service
-  systemctl enable --now vmware-vmblock-fuse.service
+  systemctl enable vmtoolsd.service
+  systemctl enable vmware-vmblock-fuse.service
 }
 
 function installVMGFX {
@@ -62,14 +62,14 @@ function installVMGFX {
 
 function configureSystem {
 
-  read -e "What is your keyboard layout?" keyboardLayout
+  read -p "What is your keyboard layout?" keyboardLayout
 
   echo "Setting $keyboardLayout as the layout in /etc/vconsole.conf..."
 
   touch /etc/vconsole.conf
   echo "KEYMAP=$keyboardLayout" >> /etc/vconsole.conf
 
-  read -e "What is the hostname of this machine?" hostname
+  read -p "What is the hostname of this machine?" hostname
 
   echo "Setting $hostname as the hostname of this machine in /etc/hostname..."
 
@@ -86,7 +86,7 @@ function configureSystem {
 function installBootloader {
   echo "Installing GRUB..."
   grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch_grub --recheck --debug
-  mkdir /boot/grub/locale
+  mkdir -p /boot/grub/locale
   cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
   grub-mkconfig -o /boot/grub/grub.cfg
 }
