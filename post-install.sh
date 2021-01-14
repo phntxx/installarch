@@ -159,6 +159,7 @@ if [[ $EUID -eq 0 ]]; then
   installBootloader
   setRootPasswd
   configureNewUser
+  finalize
 else
   echo "This script must be run as root."
   exit

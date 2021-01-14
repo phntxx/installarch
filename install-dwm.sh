@@ -38,14 +38,10 @@ function copyConfigs {
 }
 
 function makeSoftware {
-  cd /usr/src/dwm
-  make clean install
-  cd /usr/src/st
-  make clean install
-  cd /usr/src/slstatus
-  make clean install
-  cd /usr/src/surf
-  make clean install
+  make -C /usr/src/dwm -f /usr/src/dwm/Makefile clean install
+  make -C /usr/src/st -f /usr/src/st/Makefile clean install
+  make -C /usr/src/slstatus -f /usr/src/slstatus/Makefile clean install
+  make -C /usr/src/surf -f /usr/src/surf/Makefile clean install
 }
 
 if [[ $EUID -eq 0 ]]; then
