@@ -10,7 +10,7 @@ set -o nounset
 set -o pipefail
 
 function downloadSoftware {
-  pacman -S git --noconfirm
+  pacman -S git glib2 --noconfirm
   git clone https://git.suckless.org/dwm /usr/src/dwm
   git clone https://git.suckless.org/st /usr/src/st
   git clone https://git.suckless.org/slstatus /usr/src/slstatus
