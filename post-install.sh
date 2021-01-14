@@ -5,7 +5,9 @@
 # phntxx/deployarch
 #
 
-#!/bin/bash
+set -o errexit
+set -o nounset
+set -o pipefail
 
 function installPackages {
   echo "Installing efibootmgr, dosfstools, gptfdisk, grub, networkmanager, sudo and vim..."
@@ -140,6 +142,14 @@ function createNewUser {
       echo "User already exists, retrying."
     fi
   done
+}
+
+function finalize {
+  echo "Your Arch Linux installation is now pretty much done, but there's some steps this script cannot execute."
+  echo "Please complete the following steps before rebooting:"
+  echo "1. Set the correct time zone"
+  echo "2. Generate and save your locale"
+  echo "Thank you for using these scripts and have fun with Arch Linux!"
 }
 
 if [[ $EUID -eq 0 ]]; then

@@ -5,6 +5,10 @@
 # phntxx/deployarch
 #
 
+set -o errexit
+set -o nounset
+set -o pipefail
+
 function checkInternet {
   echo "Checking internet connection by pinging archlinux.org..."
   if ping -q -c 1 -W 1 archlinux.org > /dev/null; then
