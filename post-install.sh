@@ -12,6 +12,7 @@ set -o pipefail
 function installPackages {
   echo "Installing efibootmgr, dosfstools, gptfdisk, grub, networkmanager, sudo and vim..."
   pacman -Sy efibootmgr dosfstools gptfdisk grub networkmanager sudo vim --noconfirm
+  systemctl enable NetworkManager
 }
 
 function configureVM {
