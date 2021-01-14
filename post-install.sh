@@ -59,6 +59,7 @@ function installVMGFX {
   echo "Installing VMware graphics drivers..."
   pacman -S xf86-input-vmmouse xf86-video-vmware mesa gtk2 gtkmm --noconfirm
   echo needs_root_rights=yes >> /etc/X11/Xwrapper.config
+  systemctl enable vmtoolsd
 }
 
 function configureSystem {
@@ -150,6 +151,7 @@ function finalize {
   echo "Please complete the following steps before rebooting:"
   echo "1. Set the correct time zone"
   echo "2. Generate and save your locale"
+  echo "3. (optional) Install suckless software using install-dwm.sh"
   echo "Thank you for using these scripts and have fun with Arch Linux!"
 }
 
