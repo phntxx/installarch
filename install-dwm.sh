@@ -27,7 +27,7 @@ function copyConfigs {
     read -p "For which users should dwm start on startx? " username
 
     getent passwd $username > /dev/null 2&>1
-    if [ $? -ne 0 ]; then
+    if [ $? -eq 0 ]; then
       validUsernameInput=1
       cp $PWD/configs/.xinitrc /home/$username/.xinitrc
       chown $username:users /home/$username/.xinitrc
