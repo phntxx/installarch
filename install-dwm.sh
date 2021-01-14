@@ -30,6 +30,7 @@ function copyConfigs {
     if [ $? -ne 0 ]; then
       validUsernameInput=1
       cp $PWD/configs/.xinitrc /home/$username/.xinitrc
+      chown $username:users /home/$username/.xinitrc
     else
       echo "User doesn't exist, retrying."
     fi
