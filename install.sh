@@ -9,7 +9,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-function checkInternet {
+checkInternet () {
   echo "Checking internet connection by pinging archlinux.org..."
   if ping -q -c 1 -W 1 archlinux.org > /dev/null; then
     echo "Internet connection check successful, continuing..."
@@ -19,7 +19,7 @@ function checkInternet {
   fi
 }
 
-function diskSetup {
+diskSetup () {
 
   validDiskInput=0
   while [ $validDiskInput -ne "1" ]; do
@@ -103,12 +103,12 @@ function diskSetup {
   mount ${disk}1 /mnt/boot
 }
 
-function updateClock {
+updateClock () {
   echo "Enabling NTP..."
   timedatectl set-ntp true
 }
 
-function installArch {
+installArch () {
   echo "Installing Arch Linux..."
   pacstrap /mnt base base-devel linux linux-firmware
 }

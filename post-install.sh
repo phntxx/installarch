@@ -8,14 +8,14 @@
 set -o errexit
 set -o nounset
 set -o pipefail
-
-function installPackages {
+ 
+installPackages () {
   echo "Installing efibootmgr, dosfstools, gptfdisk, grub, networkmanager, sudo and vim..."
   pacman -Sy efibootmgr dosfstools gptfdisk grub networkmanager sudo vim --noconfirm
   systemctl enable NetworkManager
 }
 
-function configureVM {
+configureVM () {
   validVMInput=0
   while [ $validVMInput -ne "1" ]; do
 
@@ -48,21 +48,21 @@ function configureVM {
 
 }
 
-function installVMTools {
+installVMTools () {
   echo "Installing open-vm-tools..."
   pacman -S open-vm-tools --noconfirm
   systemctl enable vmtoolsd.service
   systemctl enable vmware-vmblock-fuse.service
 }
 
-function installVMGFX {
+installVMGFX () {
   echo "Installing VMware graphics drivers..."
   pacman -S xf86-input-vmmouse xf86-video-vmware mesa gtk2 gtkmm --noconfirm
   echo needs_root_rights=yes >> /etc/X11/Xwrapper.config
   systemctl enable vmtoolsd
 }
 
-function configureSystem {
+configureSystem () {
 
   read -p "What is your keyboard layout?" keyboardLayout
 
@@ -85,7 +85,7 @@ function configureSystem {
   echo "127.0.0.1 $hostname.localdomain $hostname" >> /etc/hosts
 }
 
-function installBootloader {
+installBootloader () {
   echo "Installing GRUB..."
   grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch_grub --recheck --debug
   mkdir -p /boot/grub/locale
@@ -93,24 +93,7 @@ function installBootloader {
   grub-mkconfig -o /boot/grub/grub.cfg
 }
 
-function setRootPasswd {
-  validPasswdInput=0
-  while [ $validPasswdInput -ne "1" ]; do
-
-    read -s -p "Enter the new root password: " rootPasswd
-    read -s -p "Enter the new root password again (verification): " verifyPasswd
-
-    if [ $rootPasswd == $verifyPasswd ]; then
-      validPasswdInput=1
-      echo "Passwords match, setting root password..."
-      echo "root:$rootPasswd" | chpasswd
-    else
-      echo "Passwords do not match, retrying."
-    fi
-  done
-}
-
-function configureNewUser {
+configureNewUser () {
   validUserInput=0
   while [ $validUserInput -ne "1" ]; do
 
@@ -127,7 +110,7 @@ function configureNewUser {
   done
 }
 
-function createNewUser {
+createNewUser () {
   validUsernameInput=0
   while [ $validUsernameInput -ne "1" ]; do
 
@@ -139,6 +122,7 @@ function createNewUser {
       validUsernameInput=1
       echo "Creating new user $username..."
       useradd -m -g users -s /bin/bash $username
+      passwd $username
       echo "The new user $username has been created. You still need to give them sudo permissions (if needed)."
     else
       echo "User already exists, retrying."
@@ -146,7 +130,7 @@ function createNewUser {
   done
 }
 
-function finalize {
+finalize () {
   echo "Your Arch Linux installation is now pretty much done, but there's some steps this script cannot execute."
   echo "Please complete the following steps before rebooting:"
   echo "1. Set the correct time zone"
@@ -160,7 +144,7 @@ if [[ $EUID -eq 0 ]]; then
   configureVM
   configureSystem
   installBootloader
-  setRootPasswd
+  passwd
   configureNewUser
   finalize
 else
