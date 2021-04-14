@@ -17,7 +17,7 @@ set -o nounset
 set -o pipefail
 
 installPacmanPackages () {
-  pacman -S \
+  sudo pacman -S \
     rxvt-unicode \
     discord \
     chromium \
@@ -28,7 +28,7 @@ installPacmanPackages () {
 }
 
 installYay () {
-  pacman -S --needed git base-devel --noconfirm
+  sudo pacman -S --needed git base-devel --noconfirm
   git clone https://aur.archlinux.org/yay.git /tmp/yay
   cd /tmp/yay
   makepkg -si
@@ -44,11 +44,6 @@ installYayPackages () {
 }
 
 
-if [[ $EUID -eq 0 ]]; then
-  installPacmanPackages
-  installYay
-  installYayPackages
-else
-  echo "This script must be run as root."
-  exit
-fi
+installPacmanPackages
+installYay
+installYayPackages
