@@ -45,7 +45,7 @@ diskSetup () {
 
   echo "This script will now partition and format your disk as follows:"
   echo "Partition 1: 300M, mounted at /mnt/boot, used for GRUB"
-  echo "Partition 2: XXXM, used for swap"
+  echo "Partition 2: $swap, used for swap"
   echo "Partition 3: remaining disk space, used for Arch Linux"
   echo "During this process, all of the data that is currently on the disk will be lost."
 

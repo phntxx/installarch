@@ -41,18 +41,5 @@ umount -r /mnt
 reboot
 ```
 
-# (Optional) Install suckless software
-
-This repository also contains a script for installing [suckless software][3] ([dwm][4], [st][5], [slstatus][6], [surf][7]) from source, complete with a custom "rice":
-
-```sh
-./install-dwm.sh
-```
-
 [1]: https://archlinux.org
 [2]: https://gist.github.com/phntxx/6dab61114d1bdc3397711f6675231964
-[3]: https://suckless.org
-[4]: https://dwm.suckless.org
-[5]: https://st.suckless.org
-[6]: https://tools.suckless.org/slstatus/
-[7]: https://surf.suckless.org
