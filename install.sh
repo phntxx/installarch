@@ -115,9 +115,10 @@ setupDiskFile () {
   mkfs.fat -F 32 ${disk}1
   mkfs.ext4 ${disk}2
 
-  mkdir /mnt/boot
-
   mount ${disk}1 /mnt
+
+  mkdir /mnt/boot
+  
   mount ${disk}1 /mnt/boot
 
   echo "Creating and enabling swap file..."
