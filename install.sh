@@ -115,7 +115,7 @@ setupDiskFile () {
   mkfs.fat -F 32 ${disk}1
   mkfs.ext4 ${disk}2
 
-  mount ${disk}1 /mnt
+  mount ${disk}2 /mnt
 
   mkdir /mnt/boot
   
