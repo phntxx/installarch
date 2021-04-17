@@ -125,6 +125,8 @@ setupDiskFile () {
 
   dd if=/dev/zero of=/mnt/swap bs=1M count=${swap} status=progress
 
+  chmod 600 /mnt/swap
+
   mkswap /mnt/swap
   swapon /mnt/swap
 }
