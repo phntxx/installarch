@@ -91,43 +91,13 @@ installBootloader () {
   mkdir -p /boot/grub/locale
   cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
   grub-mkconfig -o /boot/grub/grub.cfg
+  echo "Done installing GRUB."
 }
 
-configureNewUser () {
-  validUserInput=0
-  while [ $validUserInput -ne "1" ]; do
-
-    read -p "Do you want to create a new user? [Y/N] " userConfirm
-
-    if [ $userConfirm == "y" ] || [ $userConfirm == "Y" ]; then
-      validUserInput=1
-      createNewUser
-    elif [ $userConfirm == "n" ] || [ $userConfirm == "N" ]; then
-      validUserInput=1
-    else
-      echo "Invalid input, retrying."
-    fi
-  done
-}
-
-createNewUser () {
-  validUsernameInput=0
-  while [ $validUsernameInput -ne "1" ]; do
-
-    read -p "Enter a new username: " username
-
-    getent passwd $username > /dev/null 2&>1
-
-    if [ $? -ne 0 ]; then
-      validUsernameInput=1
-      echo "Creating new user $username..."
-      useradd -m -g users -s /bin/bash $username
-      passwd $username
-      echo "The new user $username has been created. You still need to give them sudo permissions (if needed)."
-    else
-      echo "User already exists, retrying."
-    fi
-  done
+setRootPassword () {
+  echo "Setting root password..."
+  passwd
+  echo "Done setting root password."
 }
 
 finalize () {
@@ -135,7 +105,6 @@ finalize () {
   echo "Please complete the following steps before rebooting:"
   echo "1. Set the correct time zone"
   echo "2. Generate and save your locale"
-  echo "3. (optional) Install suckless software using install-dwm.sh"
   echo "Thank you for using these scripts and have fun with Arch Linux!"
 }
 
@@ -144,8 +113,7 @@ if [[ $EUID -eq 0 ]]; then
   configureVM
   configureSystem
   installBootloader
-  passwd
-  configureNewUser
+  setRootPassword
   finalize
 else
   echo "This script must be run as root."

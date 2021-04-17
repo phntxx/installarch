@@ -5,25 +5,18 @@
 # phntxx/deployarch
 #
 
-#
-# This script installs the following packages:
-#
-# pacman: urxvt, discord, chromium, gnome-tweaks, grub-customizer, cmatrix
-# yay: vscode, notion, slack, spotify, hack nerd font
-#
-
 set -o errexit
 set -o nounset
 set -o pipefail
 
 installPacmanPackages () {
   sudo pacman -S \
-    rxvt-unicode \
-    discord \
-    chromium \
-    gnome-tweaks \
+    networkmanager-openvpn \
     grub-customizer \
     cmatrix \
+    discord \
+    chromium \
+    thunderbird \
   --noconfirm
 }
 
@@ -40,9 +33,9 @@ installYayPackages () {
     notion-app \
     slack-desktop\
     spotify \
+    1password \
     nerd-fonts-hack
 }
-
 
 installPacmanPackages
 installYay
