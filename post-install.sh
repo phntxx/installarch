@@ -9,6 +9,25 @@ set -o errexit
 set -o nounset
 set -o pipefail
  
+yesNo () {
+  local validInput=0
+  while [ $validInput -ne "1" ]; do
+
+    read -p "$1 [Y/N] " entry
+
+    if [ $entry == "y" ] || [ $entry == "Y" ]; then
+      validInput=1
+      eval $2=1
+
+    elif [ $entry == "n" ] || [ $entry == "N" ]; then
+      validInput=1
+      eval $2=0
+    else
+      echo "Invalid input, retrying."
+    fi
+  done
+}
+
 installPackages () {
   echo "Installing efibootmgr, dosfstools, gptfdisk, grub, networkmanager, sudo and vim..."
   pacman -Sy efibootmgr dosfstools gptfdisk grub networkmanager sudo vim --noconfirm
@@ -16,50 +35,22 @@ installPackages () {
 }
 
 configureVM () {
-  validVMInput=0
-  while [ $validVMInput -ne "1" ]; do
 
-    read -p "Is this Arch Linux install running inside of a VMware virtual machine? [Y/N]" vmConfirm
+  yesNo "Is this Arch Linux install running inside of a VMware virtual machine?" res
+  if [ "$res" -eq "1" ]; then
+    echo "Installing open-vm-tools..."
+    pacman -S open-vm-tools --noconfirm
+    systemctl enable vmtoolsd.service
+    systemctl enable vmware-vmblock-fuse.service
+  fi
 
-    if [ $vmConfirm == "y" ] || [ $vmConfirm == "Y" ]; then
-      validVMInput=1
-      installVMTools
-    elif [ $vmConfirm == "n" ] || [ $vmConfirm == "N" ]; then
-      validVMInput=1
-    else
-      echo "Invalid input, retrying."
-    fi
-  done
-
-  validGFXInput=0
-  while [ $validGFXInput -ne "1" ]; do
-
-    read -p "Do you require VMware graphics patches? [Y/N]" gfxConfirm
-
-    if [ $gfxConfirm == "y" ] || [ $gfxConfirm == "Y" ]; then
-      validGFXInput=1
-      installVMGFX
-    elif [ $gfxConfirm == "n" ] || [ $gfxConfirm == "N" ]; then
-      validGFXInput=1
-    else
-      echo "Invalid input, retrying."
-    fi
-  done
-
-}
-
-installVMTools () {
-  echo "Installing open-vm-tools..."
-  pacman -S open-vm-tools --noconfirm
-  systemctl enable vmtoolsd.service
-  systemctl enable vmware-vmblock-fuse.service
-}
-
-installVMGFX () {
-  echo "Installing VMware graphics drivers..."
-  pacman -S xf86-input-vmmouse xf86-video-vmware mesa gtk2 gtkmm --noconfirm
-  echo needs_root_rights=yes >> /etc/X11/Xwrapper.config
-  systemctl enable vmtoolsd
+  yesNo "Do you require VMware graphics patches?" res
+  if [ "$res" -eq "1" ]; then
+    echo "Installing VMware graphics drivers..."
+    pacman -S xf86-input-vmmouse xf86-video-vmware mesa gtk2 gtkmm --noconfirm
+    echo needs_root_rights=yes >> /etc/X11/Xwrapper.config
+    systemctl enable vmtoolsd
+  fi
 }
 
 configureSystem () {
