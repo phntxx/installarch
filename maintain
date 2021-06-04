@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# maintain.sh
+# maintain
 # phntxx/deployarch
 #
 
@@ -10,7 +10,6 @@ set -o nounset
 set -o pipefail
 
 # This list is from https://github.com/lahwaacz/Scripts/blob/master/rmshit.py
-
 removable=(
   "$HOME/.adobe"
   "$HOME/.macromedia"
@@ -174,8 +173,13 @@ restart () {
 }
 
 checkForErrors
-cleanYay
+
 cleanPacman
-upgradeYay
 upgradePacman
+
+if command -v yay &> /dev/null; then
+  cleanYay
+  upgradeYay
+fi
+
 cleanHome

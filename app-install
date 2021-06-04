@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# app-install.sh
+# app-install
 # phntxx/deployarch
 #
 
@@ -9,15 +9,14 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+# Define your packages here
+pacman=(networkmanager-openvpn grub-customizer cmatrix discord chromium)
+aur=(visual-studio-code-bin notion-app slack-desktop spotify 1password nerd-fonts-hack)
+
 installPacmanPackages () {
-  sudo pacman -S \
-    networkmanager-openvpn \
-    grub-customizer \
-    cmatrix \
-    discord \
-    chromium \
-    thunderbird \
-  --noconfirm
+  for package in "${pacman[@]}"; do
+    sudo pacman -S $package --noconfirm
+  done
 }
 
 installYay () {
@@ -28,13 +27,9 @@ installYay () {
 }
 
 installYayPackages () {
-  yay -S \
-    visual-studio-code-bin \
-    notion-app \
-    slack-desktop\
-    spotify \
-    1password \
-    nerd-fonts-hack
+  for package in "${aur[@]}"; do
+    yay -S $package
+  done
 }
 
 installPacmanPackages
