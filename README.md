@@ -2,6 +2,7 @@
 
 This repository is meant as a way to simplify the [Arch Linux][arch] installation process.
 The scripts are based on [this gist][gist] I made explaining the process of installing Arch Linux.
+Furthermore, this repository contains my personal dotfile collection.
 
 # Installation
 
