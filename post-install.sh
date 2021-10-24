@@ -1,7 +1,7 @@
 #! /bin/bash
 
 #
-# post-install
+# post-install.sh
 # phntxx/deployarch
 #
 

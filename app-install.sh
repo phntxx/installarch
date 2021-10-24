@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# app-install
+# app-install.sh
 # phntxx/deployarch
 #
 

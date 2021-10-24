@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# maintain
+# maintain.sh
 # phntxx/deployarch
 #
 

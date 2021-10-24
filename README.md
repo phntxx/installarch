@@ -13,7 +13,7 @@ installation medium, then cloning the repository and executing `install`:
 pacman -Sy git
 git clone https://github.com/phntxx/deployarch
 cd deployarch/
-./install
+./install.sh
 ```
 
 Once `install` has completed, change onto the new Arch Linux installation, install git
@@ -28,7 +28,7 @@ cd ~
 pacman -Sy git
 git clone https://github.com/phntxx/deployarch
 cd deployarch/
-./post-install
+./post-install.sh
 ```
 
 Once `post-install` has completed, there are some steps that you need to do manually:
