@@ -2,7 +2,7 @@
 
 #
 # install.sh
-# phntxx/deployarch
+# phntxx/installarch
 #
 
 set -o errexit
@@ -226,8 +226,8 @@ finalize () {
   echo ""
   echo "arch-chroot /mnt"
   echo "pacman -Sy git"
-  echo "git clone https://github.com/phntxx/deployarch"
-  echo "cd deployarch"
+  echo "git clone https://github.com/phntxx/installarch"
+  echo "cd installarch"
   echo "./post-install.sh"
   echo ""
   echo "See you on the other side!"

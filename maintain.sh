@@ -2,7 +2,7 @@
 
 #
 # maintain.sh
-# phntxx/deployarch
+# phntxx/installarch
 #
 
 set -o errexit

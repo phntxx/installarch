@@ -2,7 +2,7 @@
 
 #
 # app-install.sh
-# phntxx/deployarch
+# phntxx/installarch
 #
 
 set -o errexit
